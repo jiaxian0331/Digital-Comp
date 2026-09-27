@@ -30,7 +30,48 @@ int getUserSelection() {
             }
         }
     }
-  
+
+//Sujiva's part
+void findMatchingItem(const vector<Item>& catalog, int categoryChoice) {
+    string desiredColor;
+    string categoryName;
+
+    switch (categoryChoice) {
+        case 1:
+            categoryName = "Shirts";
+            break;
+        case 2:
+            categoryName = "Pants";
+            break;
+        case 3:
+            categoryName = "Hats";
+            break;
+        default:
+            cout << "Invalid category choice." << endl;
+            return;
+    }
+
+    while (true) {
+        cout << "Enter the color you want for " << categoryName << ": ";
+        cin >> desiredColor;
+
+        bool found = false;
+        cout << "\nMatching items found:" << endl;
+        
+        for (const auto& item : catalog) {
+            if (item.category == categoryName && item.color == desiredColor) {
+                cout << "- " << item.name << " (" << item.gender << ", " << item.style << ") | RM" << item.price << endl;
+                found = true;
+            }
+        }
+
+        if (found) {
+            break; 
+        } else {
+            cout << "Sorry, no " << categoryName << " found in that color. Please try another color." << endl;
+        }
+    }
+}
 int main() {
     vector<Item> catalog = buildCatalog();
 
@@ -53,5 +94,7 @@ int main() {
 
     int userChoice = getUserSelection(); // Lavan's part
 
+    findMatchingItem(catalog, userChoice);
+        
     return 0;
 }
