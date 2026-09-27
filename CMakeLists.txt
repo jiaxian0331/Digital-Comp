@@ -7,4 +7,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(digital_comp
     src/main.cpp
+    src/catalog.cpp
 )
