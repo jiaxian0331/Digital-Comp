@@ -1,6 +1,8 @@
 #include <iostream>
+#include <vector>
 #include "catalog.h"
 #include <limits>
+#include <string>
 using namespace std;
 
 //Lavan's part
