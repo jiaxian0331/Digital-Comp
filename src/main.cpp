@@ -1,7 +1,36 @@
 #include <iostream>
 #include "catalog.h"
+#include <limits>
 using namespace std;
 
+//Lavan's part
+int getUserSelection() {
+        int choice;
+
+        while (true) {
+            cout << "what item do you want? (1. shirts, 2. pants, 3. hats): ";
+
+            if (cin >> choice) {
+                if (choice == 1) {
+                    cout << "You have selected 1 shirt."<< endl;
+                    return choice;
+                } else if (choice == 2) {
+                    cout << "You have selected 1 pair of pants."<< endl;
+                    return choice;
+                }else if (choice == 3) {
+                    cout << "You have selected 1 hat."<< endl;
+                    return choice;
+                } else {
+                    cout << "Invalid choice. Please enter 1, 2, or 3."<< endl;
+                }
+            } else {
+                cout << "Invalid input detected. Please avoid letters and enter a number."<< endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        }
+    }
+  
 int main() {
     vector<Item> catalog = buildCatalog();
 
@@ -21,6 +50,8 @@ int main() {
     cout << "Shirts: " << shirtCount << "\n";
     cout << "Pants: " << pantsCount << "\n";  
     cout << "Hats: " << hatsCount << "\n";
+
+    int userChoice = getUserSelection(); // Lavan's part
 
     return 0;
 }
