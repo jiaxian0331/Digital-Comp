@@ -53,6 +53,7 @@ int main() {
 
     int userChoice = getUserSelection(); // Lavan's part
       
+    std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::cout << "Press Enter to exit...";
