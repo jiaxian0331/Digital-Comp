@@ -3,6 +3,7 @@
 #include <limits>
 #include <algorithm>
 #include <cctype>
+#include <iomanip>
 using namespace std;
 
 //Lavan's part
@@ -10,7 +11,8 @@ int getUserSelection() {
         int choice;
 
         while (true) {
-            cout << "what item do you want? (1. shirts, 2. pants, 3. hats): ";
+            cout << "\nWhat item are you looking for?" << endl;
+            cout << "(1. shirts, 2. pants, 3. hats)" << endl << "\nPlease enter your choice: ";
 
             if (cin >> choice) {
                 if (choice == 1) {
@@ -33,18 +35,19 @@ int getUserSelection() {
         }
     }
 
+// Sujiva's part
 string getUserColor(int category) {
     const vector<string> clothingColors = {"red", "green", "blue"};
     const vector<string> hatColors = {"black", "brown", "white"};
     const vector<string>& colors = category == 3 ? hatColors : clothingColors;
 
     while (true) {
-        cout << "Which colour would you like? (";
+        cout << "\nWhich colour would you like?" << endl << "(";
         for (size_t index = 0; index < colors.size(); ++index) {
             if (index > 0) cout << ", ";
             cout << colors[index];
         }
-        cout << "): ";
+        cout << ")" << endl << "\nPlease enter your choice: ";
 
         string color;
         cin >> color;
@@ -63,19 +66,18 @@ string getUserColor(int category) {
         cout << "Please enter the right colour option." << endl;
     }
 }
-#include <iomanip>
 
 //Zia's part
 double getBudget() {
     string input;
 
     while (true) {
-        cout << "What is your budget (RM): ";
+        cout << "\nWhat is your budget (RM): ";
         cin >> input;
 
         try {
             size_t used = 0;
-            double budget = stod(input, &used);   // turn the text into a number
+            double budget = stod(input, &used);   
 
             if (used != input.size()) {           // e.g. "20abc"
                 cout << "Invalid input. Please enter numbers only (e.g. 20 or 49.90)." << endl;
@@ -92,8 +94,7 @@ double getBudget() {
     }
 }
 
-// Finds items with the chosen category + colour, keeps those within budget,
-// and displays them. Returns the items that were displayed (for Dylan's part).
+
 vector<Item> showMatchedItems(const vector<Item>& catalog, const string& category,
                               const string& color, double budget) {
     vector<Item> matched;   // items with the right category and colour
@@ -120,8 +121,9 @@ vector<Item> showMatchedItems(const vector<Item>& catalog, const string& categor
 
     if (!shown.empty()) {
         cout << "\n" << shown.size() << " Item(s) found:" << endl;
+        cout << "==================================================" << endl;
     } else {
-        // nothing affordable -> pick the cheapest = closest to the budget
+        
         Item closest = matched[0];
         for (const auto& item : matched) {
             if (item.price < closest.price) {
@@ -131,6 +133,7 @@ vector<Item> showMatchedItems(const vector<Item>& catalog, const string& categor
         shown.push_back(closest);
         cout << "\nSorry, no item is within your budget of RM" << budget << "." << endl;
         cout << "1 Item found (closest to your budget):" << endl;
+        cout << "==================================================" << endl;
     }
 
     for (size_t i = 0; i < shown.size(); ++i) {
@@ -138,6 +141,7 @@ vector<Item> showMatchedItems(const vector<Item>& catalog, const string& categor
              << " | RM" << shown[i].price << endl;
     }
     cout << (shown.size() + 1) << ".None" << endl;
+    cout << "==================================================" << endl;
 
     return shown;
 }
@@ -147,8 +151,7 @@ void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
     int choice;
 
     while (true) {
-        cout << "Which item would you like? (1-" << shownItems.size()
-             << ", " << shownItems.size() + 1 << ". None): ";
+        cout << "\nWhich item would you like? (1-" << shownItems.size() + 1 << "): ";
 
         if (cin >> choice) {
             if (choice >= 1 && choice <= static_cast<int>(shownItems.size())) {
@@ -175,48 +178,78 @@ void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
     }
 }
 
-int main() {
-    vector<Item> catalog = buildCatalog();
+// Jia Xian's part
+void displayCart(const vector<Item>& cart) {
+    cout << "\n==================================================" << endl;
+    cout << "                 YOUR CART SUMMARY                " << endl;
+    cout << "==================================================" << endl;
 
-    cout << "Total Items: " << catalog.size() << "\n\n";
-    
-    int shirtCount = 0, pantsCount = 0, hatsCount = 0;
-
-    for (const auto& it : catalog) {
-        cout << it.category << " | " << it.gender << " | " << it.style << " | " << it.color << " | " << it.name << " | RM" << it.price << "\n";
-    
-        if (it.category == "Shirts") shirtCount++;
-        else if (it.category == "Pants") pantsCount++;
-        else if (it.category == "Hats") hatsCount++;
-    }
-
-    cout << "\n--- Counts ---\n";
-    cout << "Shirts: " << shirtCount << "\n";
-    cout << "Pants: " << pantsCount << "\n";  
-    cout << "Hats: " << hatsCount << "\n";
-
-    int userChoice = getUserSelection(); // Lavan's part
-    string selectedColor = getUserColor(userChoice);
-    const string selectedCategory = userChoice == 1 ? "Shirts" : userChoice == 2 ? "Pants" : "Hats";
-    cout << "\nAvailable " << selectedColor << " " << selectedCategory << ":\n";
-    for (const auto& item : catalog) {
-        if (item.category == selectedCategory && item.color == selectedColor) {
-            cout << item.name << " | " << item.gender << " | " << item.style
-                 << " | RM" << item.price << "\n";
+    if (cart.empty()) {
+        cout << "Your cart is empty. No items were added." << endl;
+    } else {
+        double total = 0.0;
+        cout << fixed << setprecision(2);
+        for (size_t i = 0; i < cart.size(); ++i) {
+            cout << (i + 1) << ". " << cart[i].name
+                 << " | RM" << cart[i].price << endl;
+            total += cart[i].price;
         }
+        cout << "--------------------------------------------------" << endl;
+        cout << "Total: RM" << total << endl;
     }
-          double budget = getBudget(); // Zia's part
-    vector<Item> shownItems = showMatchedItems(catalog, selectedCategory, selectedColor, budget); // Zia's part
+    cout << "==================================================" << endl;
+}
 
-    // Dylan's part
+bool askContinue() {
+    while (true) {
+        cout << "\nDo you wish to look for more items? (y/n): ";
+        string answer;
+        cin >> answer;
+
+        if (answer.size() == 1) {
+            char c = static_cast<char>(tolower(static_cast<unsigned char>(answer[0])));
+            if (c == 'y') return true;
+            if (c == 'n') return false;
+        }
+        cout << "Invalid input. Please enter 'y' or 'n'." << endl;
+    }
+}
+
+
+// Main Program
+int main() {
+    cout << "=====================================" << endl;
+    cout << "== Welcome to Uniqlo Online Store! ==" << endl;
+    cout << "=====================================" << endl;
+
+    vector<Item> catalog = buildCatalog();
     vector<Item> cart;
-    selectItem(shownItems, cart);
-    
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-    std::cout << "Press Enter to exit...";
-    std::cin.get();
-    
+    while (true) {
+        int userChoice = getUserSelection();                          // Lavan's part
+        string selectedColor = getUserColor(userChoice);
+        const string selectedCategory =
+            userChoice == 1 ? "Shirts" : userChoice == 2 ? "Pants" : "Hats";
+
+        double budget = getBudget();                                  // Zia's part
+        vector<Item> shownItems =
+            showMatchedItems(catalog, selectedCategory, selectedColor, budget);
+
+        if (!shownItems.empty()) {                                    // Dylan's part
+            selectItem(shownItems, cart);
+        } else {
+            cout << "Nothing to select this round." << endl;
+        }
+
+        if (!askContinue()) break;   // Jia Xian's part
+    }
+
+    displayCart(cart);   // Jia Xian's part
+
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "\nPress Enter to exit the program...";
+    cin.get();
+
     return 0;
 }
