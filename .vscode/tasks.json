@@ -1,14 +1,16 @@
 {
     "tasks": [
         {
-            "type": "cppbuild",
-            "label": "C/C++: cl.exe build active file",
-            "command": "cl.exe",
+            "type": "process",
+            "label": "C/C++: c++ build active file",
+            "command": "c++",
             "args": [
-                "/Zi",
-                "/EHsc",
-                "/nologo",
-                "/Fe${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-g",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "${workspaceFolder}\\src\\main.cpp",
                 "${workspaceFolder}\\src\\catalog.cpp"
             ],
@@ -16,7 +18,7 @@
                 "cwd": "${fileDirname}"
             },
             "problemMatcher": [
-                "$msCompile"
+                "$gcc"
             ],
             "group": {
                 "kind": "build",
