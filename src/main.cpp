@@ -198,6 +198,7 @@ int main() {
     int userChoice = getUserSelection(); // Lavan's part
     string selectedColor = getUserColor(userChoice);
     const string selectedCategory = userChoice == 1 ? "Shirts" : userChoice == 2 ? "Pants" : "Hats";
+/*
     cout << "\nAvailable " << selectedColor << " " << selectedCategory << ":\n";
     for (const auto& item : catalog) {
         if (item.category == selectedCategory && item.color == selectedColor) {
@@ -205,6 +206,7 @@ int main() {
                  << " | RM" << item.price << "\n";
         }
     }
+*/
           double budget = getBudget(); // Zia's part
     vector<Item> shownItems = showMatchedItems(catalog, selectedCategory, selectedColor, budget); // Zia's part
 
