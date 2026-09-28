@@ -63,7 +63,84 @@ string getUserColor(int category) {
         cout << "Please enter the right colour option." << endl;
     }
 }
+#include <iomanip>
 
+//Zia's part
+double getBudget() {
+    string input;
+
+    while (true) {
+        cout << "What is your budget (RM): ";
+        cin >> input;
+
+        try {
+            size_t used = 0;
+            double budget = stod(input, &used);   // turn the text into a number
+
+            if (used != input.size()) {           // e.g. "20abc"
+                cout << "Invalid input. Please enter numbers only (e.g. 20 or 49.90)." << endl;
+            } else if (!(budget > 0)) {           // zero or negative
+                cout << "Budget must be more than RM0. Please try again." << endl;
+            } else if (budget > 100000) {         // unrealistic amount
+                cout << "Budget is too large. Please enter a realistic amount." << endl;
+            } else {
+                return budget;                    // valid budget
+            }
+        } catch (...) {                           // letters, symbols, etc.
+            cout << "Invalid input. Please enter numbers only (e.g. 20 or 49.90)." << endl;
+        }
+    }
+}
+
+// Finds items with the chosen category + colour, keeps those within budget,
+// and displays them. Returns the items that were displayed (for Dylan's part).
+vector<Item> showMatchedItems(const vector<Item>& catalog, const string& category,
+                              const string& color, double budget) {
+    vector<Item> matched;   // items with the right category and colour
+    vector<Item> shown;     // items we actually display
+
+    for (const auto& item : catalog) {
+        if (item.category == category && item.color == color) {
+            matched.push_back(item);
+        }
+    }
+
+    if (matched.empty()) {
+        cout << "\nNo items found." << endl;
+        return shown;
+    }
+
+    for (const auto& item : matched) {
+        if (item.price <= budget) {
+            shown.push_back(item);
+        }
+    }
+
+    cout << fixed << setprecision(2);
+
+    if (!shown.empty()) {
+        cout << "\n" << shown.size() << " Item(s) found:" << endl;
+    } else {
+        // nothing affordable -> pick the cheapest = closest to the budget
+        Item closest = matched[0];
+        for (const auto& item : matched) {
+            if (item.price < closest.price) {
+                closest = item;
+            }
+        }
+        shown.push_back(closest);
+        cout << "\nSorry, no item is within your budget of RM" << budget << "." << endl;
+        cout << "1 Item found (closest to your budget):" << endl;
+    }
+
+    for (size_t i = 0; i < shown.size(); ++i) {
+        cout << (i + 1) << "." << shown[i].name << " | " << shown[i].style
+             << " | RM" << shown[i].price << endl;
+    }
+    cout << (shown.size() + 1) << ".None" << endl;
+
+    return shown;
+}
 int main() {
     vector<Item> catalog = buildCatalog();
 
@@ -94,7 +171,8 @@ int main() {
                  << " | RM" << item.price << "\n";
         }
     }
-      
+          double budget = getBudget(); // Zia's part
+    vector<Item> shownItems = showMatchedItems(catalog, selectedCategory, selectedColor, budget); // Zia's part
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
