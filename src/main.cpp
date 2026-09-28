@@ -141,6 +141,40 @@ vector<Item> showMatchedItems(const vector<Item>& catalog, const string& categor
 
     return shown;
 }
+
+// Dylan's part
+void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
+    int choice;
+
+    while (true) {
+        cout << "Which item would you like? (1-" << shownItems.size()
+             << ", " << shownItems.size() + 1 << ". None): ";
+
+        if (cin >> choice) {
+            if (choice >= 1 && choice <= static_cast<int>(shownItems.size())) {
+                cart.push_back(shownItems[choice - 1]);
+
+                cout << shownItems[choice - 1].name
+                     << " has been added to your cart!" << endl;
+
+                return;
+            } 
+            else if (choice == static_cast<int>(shownItems.size()) + 1) {
+                cout << "No item selected." << endl;
+                return;
+            } 
+            else {
+                cout << "Invalid number. Please choose a valid option." << endl;
+            }
+        } 
+        else {
+            cout << "Invalid input. Please enter a number." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+}
+
 int main() {
     vector<Item> catalog = buildCatalog();
 
@@ -173,6 +207,11 @@ int main() {
     }
           double budget = getBudget(); // Zia's part
     vector<Item> shownItems = showMatchedItems(catalog, selectedCategory, selectedColor, budget); // Zia's part
+
+    // Dylan's part
+    vector<Item> cart;
+    selectItem(shownItems, cart);
+    
     std::cin.clear();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
