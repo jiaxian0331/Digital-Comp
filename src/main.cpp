@@ -177,7 +177,7 @@ void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
 
 int main() {
     vector<Item> catalog = buildCatalog();
-
+/*
     cout << "Total Items: " << catalog.size() << "\n\n";
     
     int shirtCount = 0, pantsCount = 0, hatsCount = 0;
@@ -194,7 +194,7 @@ int main() {
     cout << "Shirts: " << shirtCount << "\n";
     cout << "Pants: " << pantsCount << "\n";  
     cout << "Hats: " << hatsCount << "\n";
-
+*/
     int userChoice = getUserSelection(); // Lavan's part
     string selectedColor = getUserColor(userChoice);
     const string selectedCategory = userChoice == 1 ? "Shirts" : userChoice == 2 ? "Pants" : "Hats";
