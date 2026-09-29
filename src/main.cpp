@@ -200,20 +200,18 @@ void displayCart(const vector<Item>& cart) {
     cout << "==================================================" << endl;
 }
 
-bool askNextAction() {
+int askNextAction() {
     while (true) {
         cout << "\nWhat would you like to do next?" << endl;
-        cout << "(1. View Cart, 2. Add Items)" << endl;
+        cout << "(1. View Cart, 2. Add Items, 3. Checkout)" << endl;
         cout << "\nPlease enter your choice: ";
 
         int choice;
         if (cin >> choice) {
-            if (choice == 1) {
-                return false;   // View Cart
-            } else if (choice == 2) {
-                return true;    // Add Items
+            if (choice >= 1 && choice <= 3) {
+                return choice;
             } else {
-                cout << "Invalid choice. Please enter 1 or 2." << endl;
+                cout << "Invalid choice. Please enter 1, 2, or 3." << endl;
             }
         } else {
             cout << "Invalid input. Please enter a number." << endl;
@@ -251,10 +249,20 @@ int main() {
             cout << "Nothing to select this round." << endl;
         }
 
-        bool addMore = askNextAction();
-        if (!addMore) {
-            displayCart(cart);
-            cout << "\nReturning to shopping...\n" << endl;
+        bool checkout = false;
+        while (!checkout) {
+            int action = askNextAction();
+
+            if (action == 1) {
+                displayCart(cart);
+            }
+            else if (action == 2) {
+                break;
+            }
+            else {
+                checkout = true;
+                keepShopping = false;
+            }
         }
     }
 
