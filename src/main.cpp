@@ -200,18 +200,26 @@ void displayCart(const vector<Item>& cart) {
     cout << "==================================================" << endl;
 }
 
-bool askContinue() {
+bool askNextAction() {
     while (true) {
-        cout << "\nDo you wish to look for more items? (y/n): ";
-        string answer;
-        cin >> answer;
+        cout << "\nWhat would you like to do next?" << endl;
+        cout << "(1. View Cart, 2. Add Items)" << endl;
+        cout << "\nPlease enter your choice: ";
 
-        if (answer.size() == 1) {
-            char c = static_cast<char>(tolower(static_cast<unsigned char>(answer[0])));
-            if (c == 'y') return true;
-            if (c == 'n') return false;
+        int choice;
+        if (cin >> choice) {
+            if (choice == 1) {
+                return false;   // View Cart
+            } else if (choice == 2) {
+                return true;    // Add Items
+            } else {
+                cout << "Invalid choice. Please enter 1 or 2." << endl;
+            }
+        } else {
+            cout << "Invalid input. Please enter a number." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        cout << "Invalid input. Please enter 'y' or 'n'." << endl;
     }
 }
 
@@ -225,7 +233,9 @@ int main() {
     vector<Item> catalog = buildCatalog();
     vector<Item> cart;
 
-    while (true) {
+    bool keepShopping = true;
+
+    while (keepShopping) {
         int userChoice = getUserSelection();                          // Lavan's part
         string selectedColor = getUserColor(userChoice);
         const string selectedCategory =
@@ -241,10 +251,14 @@ int main() {
             cout << "Nothing to select this round." << endl;
         }
 
-        if (!askContinue()) break;   // Jia Xian's part
+        bool addMore = askNextAction();
+        if (!addMore) {
+            displayCart(cart);
+            cout << "\nReturning to shopping...\n" << endl;
+        }
     }
 
-    displayCart(cart);   // Jia Xian's part
+    displayCart(cart);
 
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
