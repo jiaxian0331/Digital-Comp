@@ -17,14 +17,18 @@ int getUserSelection() {
             if (cin >> choice) {
                 if (choice == 1) {
                     cout << "You have selected 1 shirt."<< endl;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     return choice;
                 } else if (choice == 2) {
                     cout << "You have selected 1 pair of pants."<< endl;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     return choice;
                 }else if (choice == 3) {
                     cout << "You have selected 1 hat."<< endl;
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     return choice;
                 } else {
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     cout << "Invalid choice. Please enter 1, 2, or 3."<< endl;
                 }
             } else {
@@ -51,6 +55,7 @@ string getUserColor(int category) {
 
         string color;
         cin >> color;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         transform(color.begin(), color.end(), color.begin(), [](unsigned char character) {
             return static_cast<char>(tolower(character));
         });
@@ -74,6 +79,7 @@ double getBudget() {
     while (true) {
         cout << "\nWhat is your budget (RM): ";
         cin >> input;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         try {
             size_t used = 0;
@@ -156,6 +162,7 @@ void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
         if (cin >> choice) {
             if (choice >= 1 && choice <= static_cast<int>(shownItems.size())) {
                 cart.push_back(shownItems[choice - 1]);
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
                 cout << shownItems[choice - 1].name
                      << " has been added to your cart!" << endl;
@@ -164,9 +171,11 @@ void selectItem(const vector<Item>& shownItems, vector<Item>& cart) {
             } 
             else if (choice == static_cast<int>(shownItems.size()) + 1) {
                 cout << "No item selected." << endl;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 return;
             } 
             else {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid number. Please choose a valid option." << endl;
             }
         } 
@@ -209,8 +218,10 @@ int askNextAction() {
         int choice;
         if (cin >> choice) {
             if (choice >= 1 && choice <= 3) {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 return choice;
             } else {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << "Invalid choice. Please enter 1, 2, or 3." << endl;
             }
         } else {
@@ -268,8 +279,6 @@ int main() {
 
     displayCart(cart);
 
-    cin.clear();
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cout << "\nPress Enter to exit the program...";
     cin.get();
 
